@@ -28,9 +28,8 @@ public class PriorityAwareSubscriberModel<T, U> {
 
         List<U> subscribers = new ArrayList<>();
 
-        //  todo check are integers sorted
         for (Integer priority : subscribersBy.keySet()) {
-            Queue<U> subscribersWithPriority = subscribersBy.computeIfAbsent(priority, p -> new LinkedList<U>());
+            Queue<U> subscribersWithPriority = subscribersBy.computeIfAbsent(priority, p -> new LinkedList<>());
 
             subscribers.addAll(subscribersWithPriority);
         }

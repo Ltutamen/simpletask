@@ -5,16 +5,13 @@ import ua.axiom.apply.model.PriorityAwareSubscriberModel;
 import java.util.List;
 
 public class BackToStockServiceImp implements BackToStockService {
+    public final static Integer SENIOR_AGE_THRESHOLD = 70;
+
     private final static Integer HIGH_PRIORITY = 1;
     private final static Integer AVERAGE_PRIORITY = 2;
 
-    public final static Integer SENIOR_AGE_THRESHOLD = 70;
-
-    //  nothing was said about Spring
     private final PriorityAwareSubscriberModel<Product, User> subscriberModel = new PriorityAwareSubscriberModel<>();
 
-    public BackToStockServiceImp() {
-    }
 
     @Override
     public void subscribe(User user, Product product) {
@@ -31,7 +28,6 @@ public class BackToStockServiceImp implements BackToStockService {
         }
 
         //  Doc says "also some users may have priority for particular product categories", but User class has no sign of it
-
         subscriberModel.addSubscriber(product, user, priority);
 
     }
