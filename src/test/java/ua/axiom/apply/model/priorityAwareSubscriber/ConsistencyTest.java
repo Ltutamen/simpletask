@@ -8,9 +8,13 @@ import ua.axiom.apply.ProductCategory;
 import ua.axiom.apply.User;
 import ua.axiom.apply.model.PriorityAwareSubscriberModel;
 
+import java.util.Collection;
 import java.util.List;
 
-public class FIFOTest {
+/**
+ * Tests that subscriptions dont get lost
+ */
+public class ConsistencyTest {
     private final static int PRIORITY = 1;
 
     private final Product product1 = new Product("test_product_1", ProductCategory.BOOKS);
@@ -27,6 +31,28 @@ public class FIFOTest {
         model = new PriorityAwareSubscriberModel<>();
     }
 
+    @Test
+    public void testSingleSubscriptionNotLost() {
+        model.addSubscriber(product1, user1, PRIORITY);
+
+        List<User> subscribed = model.getOrderedSubscribers(product1);
+
+        Assert.assertEquals(1, subscribed.size());
+
+        Assert.assertEquals(user1, subscribed.iterator().next());
+    }
+
+    @Test
+    public void differentProductsSubscriptionTest() {
+        model.addSubscriber(product1, user1, PRIORITY);
+        model.addSubscriber(product2, user1, PRIORITY);
+
+        List<User> product1Subs = model.getOrderedSubscribers(product1);
+        Assert.assertEquals(1, product1Subs.size());
+
+        List<User> product2Usbs = model.getOrderedSubscribers(product2);
+        Assert.assertEquals(1, product2Usbs.size());
+    }
 
     @Test
     public void fifoOrderTest() {

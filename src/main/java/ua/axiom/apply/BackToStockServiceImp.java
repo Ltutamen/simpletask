@@ -8,7 +8,7 @@ public class BackToStockServiceImp implements BackToStockService {
     private final static Integer HIGH_PRIORITY = 1;
     private final static Integer AVERAGE_PRIORITY = 2;
 
-    private final static Integer SENIOR_AGE_THRESHOLD = 70;
+    public final static Integer SENIOR_AGE_THRESHOLD = 70;
 
     //  nothing was said about Spring
     private final PriorityAwareSubscriberModel<Product, User> subscriberModel = new PriorityAwareSubscriberModel<>();
@@ -24,7 +24,9 @@ public class BackToStockServiceImp implements BackToStockService {
             priority = HIGH_PRIORITY;
         }
 
-        if(user.getAge() > SENIOR_AGE_THRESHOLD && product.getCategory() == ProductCategory.MEDICAL) {
+        //  doc says "elder", but it is common to use round numbers
+        //  also, you are "70 yo" only for a moment, then you are 70 yo + months + days
+        if(user.getAge() >= SENIOR_AGE_THRESHOLD && product.getCategory() == ProductCategory.MEDICAL) {
             priority = HIGH_PRIORITY;
         }
 
